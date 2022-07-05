@@ -11,9 +11,9 @@ dotenv.config();
 const PORT = process.env.PORT || 80;
 
 // Certificate
-const privateKey = fs.readFileSync('/etc/letsencrypt/live/jcampbellg.me/privkey.pem', 'utf8');
-const certificate = fs.readFileSync('/etc/letsencrypt/live/jcampbellg.me/cert.pem', 'utf8');
-const ca = fs.readFileSync('/etc/letsencrypt/live/jcampbellg.me/chain.pem', 'utf8');
+const privateKey = fs.readFileSync(process.env.PRIVKEY_FILE, 'utf8');
+const certificate = fs.readFileSync(process.env.CERT_FILE, 'utf8');
+const ca = fs.readFileSync(process.env.CHAIN_FILE, 'utf8');
 
 const credentials = {
 	key: privateKey,

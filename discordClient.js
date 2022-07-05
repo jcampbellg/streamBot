@@ -4,7 +4,7 @@ import { Client, Intents } from 'discord.js'
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { REST } from '@discordjs/rest';
 import { Routes } from 'discord-api-types/v9';
-import obsClient from './obsClient.js';
+import obsClient, { obsOnline } from './obsClient.js';
 import twitchApi from './twitchApi.js';
 import { events } from './constants.js';
 
@@ -114,6 +114,13 @@ discordClient.on('interactionCreate', async interaction => {
     });
   }
 
+  if (commandName === 'escena' || commandName === 'cámara') {
+    if (obsOnline) {
+      interaction.reply(':x: OBS no esta conectado');
+      return;
+    }
+  }
+
   if (commandName === 'escena') {
     const sceneName = options.getString('escena');
     obsClient.send('SetCurrentScene', {'scene-name': sceneName }).catch(err => console.log(err));;
@@ -124,19 +131,19 @@ discordClient.on('interactionCreate', async interaction => {
       obsClient.send('SetSourceFilterVisibility', { sourceName: 'Live', filterName: 'Face Cam Chat', filterEnabled: true}).catch(err => console.log(err));
       obsClient.send('SetSourceFilterVisibility', { sourceName: 'Live', filterName: 'Chat Show', filterEnabled: true}).catch(err => console.log(err));
     }
-    interaction.reply(':white_check_mark: Obs en la escena `'+sceneName+'`');
+    interaction.reply(':white_check_mark: OBS en la escena `'+sceneName+'`');
   }
 
   if (commandName === 'cámara') {
     const position = options.getString('posición');
     obsClient.send('SetSourceFilterVisibility', { sourceName: 'Live', filterName: position, filterEnabled: true}).catch(err => console.log(err));
-    
+
     if (position === 'Face Cam Chat') {
       obsClient.send('SetSourceFilterVisibility', { sourceName: 'Live', filterName: 'Chat Show', filterEnabled: true}).catch(err => console.log(err));
     } else {
       obsClient.send('SetSourceFilterVisibility', { sourceName: 'Live', filterName: 'Chat Hide', filterEnabled: true}).catch(err => console.log(err));
     }
-    interaction.reply(':white_check_mark: Obs en la escena `'+position+'`');
+    interaction.reply(':white_check_mark: Cámara se movia a `'+position+'`');
   }
 });
 

@@ -18,7 +18,16 @@ router.post('/callback', (req, res, next) => {
 
       switch (event.reward.title) {
         case 'SIIUUU':
-          obsClient.send('RestartMedia', { source: 'SIUUU' }).catch(err => console.log(err));
+          obsClient.send('RestartMedia', { sourceName: 'SIUUU' }).catch(err => console.log(err));
+          break;
+        case 'Una Dedicatoria':
+          obsClient.send('SetTextGDIPlusProperties', {source: 'Message', text: event.user_input}).catch(err => console.log(err));
+          obsClient.send('SetTextGDIPlusProperties', {source: 'User', text: event.user_name}).catch(err => console.log(err));
+          obsClient.send('SetSceneItemRender', {'scene-name': 'Stream Points', source: 'New Message', render: true}).catch(err => { console.log(err); });
+
+          setTimeout(() => {
+            obsClient.send('SetSceneItemRender', {'scene-name': 'Stream Points', source: 'New Message', render: false}).catch(err => { console.log(err); });
+          }, 5000);
           break;
         default:
           break;

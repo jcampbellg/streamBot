@@ -94,6 +94,14 @@ discordClient.on('interactionCreate', async interaction => {
       interaction.reply(':x: `Error conectando a OBS:` ```'+JSON.stringify(err, undefined, 2)+'```');
     });
   }
+
+  if (commandName === 'live') {
+    obsClient.send('SetCurrentScene', {'scene-name': 'Live' });
+    obsClient.send('SetSourceFilterVisibility', { sourceName: 'Sounds', filterName: 'Desktop', filterEnabled: true}).catch(err => console.log(err));
+    obsClient.send('SetSourceFilterVisibility', { sourceName: 'Sounds', filterName: 'MIC', filterEnabled: true}).catch(err => console.log(err));
+    obsClient.send('SetSourceFilterVisibility', { sourceName: 'Live', filterName: 'Face Cam Chat', filterEnabled: true}).catch(err => console.log(err));
+    obsClient.send('SetSourceFilterVisibility', { sourceName: 'Live', filterName: 'Chat Show', filterEnabled: true}).catch(err => console.log(err));
+  }
 });
 
 export default discordClient;

@@ -27,7 +27,7 @@ router.post('/callback', (req, res, next) => {
 
           setTimeout(() => {
             obsClient.send('SetSceneItemRender', {'scene-name': 'Stream Points', source: 'New Message', render: false}).catch(err => { console.log(err); });
-          }, 5000);
+          }, 10000);
           break;
         default:
           break;

@@ -97,8 +97,6 @@ discordClient.on('interactionCreate', async interaction => {
       interaction.reply(':x: `Error conectando a OBS:` ```'+JSON.stringify(err, undefined, 2)+'```');
     });
   }
-
-  interaction.reply(commandName);
 });
 
 export default discordClient;

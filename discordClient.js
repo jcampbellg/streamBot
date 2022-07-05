@@ -11,7 +11,16 @@ import { events } from './constants.js';
 const commands = [
   new SlashCommandBuilder()
     .setName('empezar')
-    .setDescription('Conectarse a OBS')
+    .setDescription('Conectarse a OBS y Twitch'),
+  new SlashCommandBuilder()
+    .setName('escena')
+    .setDescription('Escena en vivo')
+    .addStringOption(option =>
+      option.setName('nombre').setDescription('Escena a cambiar').setRequired(true).addChoices(
+        {value: 'Live', name: 'En Vivo'},
+        {value: 'End', name: 'Finalizar'},
+      )
+    )
 ].map(command => command.toJSON());
 
 const rest = new REST({ version: '9' }).setToken(process.env.DISCORD_BOT_TOKEN);
@@ -33,7 +42,7 @@ discordClient.once('ready', () => {
 
 discordClient.on('interactionCreate', async interaction => {
   if (!interaction.isCommand()) return;
-	const { commandName, channel } = interaction;
+	const { commandName, channel, options } = interaction;
   // empezar
   if (commandName === 'empezar') {
     obsClient.connect({address: process.env.OBS_URL}).then((data) => {
@@ -95,12 +104,17 @@ discordClient.on('interactionCreate', async interaction => {
     });
   }
 
-  if (commandName === 'live') {
-    obsClient.send('SetCurrentScene', {'scene-name': 'Live' });
-    obsClient.send('SetSourceFilterVisibility', { sourceName: 'Sounds', filterName: 'Desktop', filterEnabled: true}).catch(err => console.log(err));
-    obsClient.send('SetSourceFilterVisibility', { sourceName: 'Sounds', filterName: 'MIC', filterEnabled: true}).catch(err => console.log(err));
-    obsClient.send('SetSourceFilterVisibility', { sourceName: 'Live', filterName: 'Face Cam Chat', filterEnabled: true}).catch(err => console.log(err));
-    obsClient.send('SetSourceFilterVisibility', { sourceName: 'Live', filterName: 'Chat Show', filterEnabled: true}).catch(err => console.log(err));
+  if (commandName === 'escena') {
+    const sceneName = options.getString('username');
+    obsClient.send('SetCurrentScene', {'scene-name': sceneName });
+
+    if (sceneName === 'Live') {
+      obsClient.send('SetSourceFilterVisibility', { sourceName: 'Sounds', filterName: 'Desktop', filterEnabled: true}).catch(err => console.log(err));
+      obsClient.send('SetSourceFilterVisibility', { sourceName: 'Sounds', filterName: 'MIC', filterEnabled: true}).catch(err => console.log(err));
+      obsClient.send('SetSourceFilterVisibility', { sourceName: 'Live', filterName: 'Face Cam Chat', filterEnabled: true}).catch(err => console.log(err));
+      obsClient.send('SetSourceFilterVisibility', { sourceName: 'Live', filterName: 'Chat Show', filterEnabled: true}).catch(err => console.log(err));
+    }
+    interaction.reply(':white_check_mark: Obs en la escena `'+sceneName+'`');
   }
 });
 

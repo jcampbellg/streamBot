@@ -7,6 +7,7 @@ const router = express.Router();
 router.post('/callback', (req, res, next) => {
   const notification = req.body.notification;
   const event = notification.event;
+  console.log(req.headers)
   switch (req.headers['twitch-eventsub-message-type']) {
     case 'webhook_callback_verification':
       res.status(200).send(notification.challenge);

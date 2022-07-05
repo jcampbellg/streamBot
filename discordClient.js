@@ -11,10 +11,7 @@ import { events } from './constants.js';
 const commands = [
   new SlashCommandBuilder()
     .setName('empezar')
-    .setDescription('Conectarse a OBS'),
-  new SlashCommandBuilder()
-    .setName('test')
-    .setDescription('Test')
+    .setDescription('Conectarse a OBS')
 ].map(command => command.toJSON());
 
 const rest = new REST({ version: '9' }).setToken(process.env.DISCORD_BOT_TOKEN);

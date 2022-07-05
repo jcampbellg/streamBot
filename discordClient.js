@@ -59,26 +59,26 @@ discordClient.on('interactionCreate', async interaction => {
               Promise.all(ids.map(id => {id => {
                 return twitchApi.eventSub.delete(`?id=${id})`);
               }})).then(() => {
-                Promise.all(events.map(({type, condition}) => {
-                  return twitchApi.eventSub({
-                    method: 'POST',
-                    data: {
-                      'type': type,
-                      'version': '1',
-                      'condition': condition,
-                      'transport':{
-                        'method': 'webhook',
-                        'callback': 'https://jcampbellg.me/eventsub/callback',
-                        'secret': process.env.TWITCH_CLIENT_ID
-                      }
-                    }
-                  });
-                })).then(() => {
-                  message.edit(':white_check_mark: `Subscribiendo los eventos`');
-                }).catch(err => {
-                  console.log(err);
-                  message.edit(':x: `Error subscribiendo los eventos` ```'+JSON.stringify(err, undefined, 2)+'```');
-                });
+                // Promise.all(events.map(({type, condition}) => {
+                //   return twitchApi.eventSub({
+                //     method: 'POST',
+                //     data: {
+                //       'type': type,
+                //       'version': '1',
+                //       'condition': condition,
+                //       'transport':{
+                //         'method': 'webhook',
+                //         'callback': 'https://jcampbellg.me/eventsub/callback',
+                //         'secret': process.env.TWITCH_CLIENT_ID
+                //       }
+                //     }
+                //   });
+                // })).then(() => {
+                //   message.edit(':white_check_mark: `Subscribiendo los eventos`');
+                // }).catch(err => {
+                //   console.log(err);
+                //   message.edit(':x: `Error subscribiendo los eventos` ```'+JSON.stringify(err, undefined, 2)+'```');
+                // });
               }).catch(err => {
                 message.edit(':x: `Error eliminando los eventos` ```'+JSON.stringify(err, undefined, 2)+'```');
               });

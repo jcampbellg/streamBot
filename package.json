@@ -1,0 +1,28 @@
+{
+  "name": "streambot",
+  "version": "0.0.1",
+  "description": "jcampbellg stream monitoring bot",
+  "private": true,
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "repository": "git@github.com:jcampbellg/streamBot.git",
+  "author": "jcampbellg",
+  "license": "MIT",
+  "dependencies": {
+    "@discordjs/builders": "^0.15.0",
+    "@discordjs/rest": "^0.5.0",
+    "@discordjs/voice": "^0.10.0",
+    "body-parser": "^1.20.0",
+    "cors": "^2.8.5",
+    "discord-api-types": "^0.36.1",
+    "discord.js": "^13.8.1",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "node-gtts": "^2.0.2",
+    "obs-websocket-js": "4.0.3",
+    "tmi.js": "^1.8.5"
+  }
+}

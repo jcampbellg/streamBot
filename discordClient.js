@@ -14,9 +14,9 @@ const commands = [
     .setDescription('Conectarse a OBS y Twitch'),
   new SlashCommandBuilder()
     .setName('escena')
-    .setDescription('Escena en vivo')
+    .setDescription('Cambiar la escena'),
     .addStringOption(option =>
-      option.setName('nombre').setDescription('Escena a cambiar').setRequired(true).addChoices(
+      option.setName('escena').setDescription('Escena a cambiar').setRequired(true).addChoices(
         {value: 'Live', name: 'En Vivo'},
         {value: 'End', name: 'Finalizar'},
       )
@@ -105,8 +105,8 @@ discordClient.on('interactionCreate', async interaction => {
   }
 
   if (commandName === 'escena') {
-    const sceneName = options.getString('username');
-    obsClient.send('SetCurrentScene', {'scene-name': sceneName });
+    const sceneName = options.getString('escena');
+    obsClient.send('SetCurrentScene', {'scene-name': sceneName }).catch(err => console.log(err));;
 
     if (sceneName === 'Live') {
       obsClient.send('SetSourceFilterVisibility', { sourceName: 'Sounds', filterName: 'Desktop', filterEnabled: true}).catch(err => console.log(err));

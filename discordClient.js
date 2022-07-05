@@ -20,6 +20,16 @@ const commands = [
         {value: 'Live', name: 'En Vivo'},
         {value: 'End', name: 'Finalizar'},
       )
+    ),
+  new SlashCommandBuilder()
+    .setName('cámara')
+    .setDescription('Cambiar la posición de la cámara')
+    .addStringOption(option =>
+      option.setName('posición').setDescription('Nueva posición').setRequired(true).addChoices(
+        {value: 'Face Cam TL Big', name: 'Arriba Izquierda'},
+        {value: 'Face Cam DL Small', name: 'Abajo Izquierda'},
+        {value: 'Face Cam Chat', name: 'Camara de Chat'},
+      )
     )
 ].map(command => command.toJSON());
 
@@ -115,6 +125,18 @@ discordClient.on('interactionCreate', async interaction => {
       obsClient.send('SetSourceFilterVisibility', { sourceName: 'Live', filterName: 'Chat Show', filterEnabled: true}).catch(err => console.log(err));
     }
     interaction.reply(':white_check_mark: Obs en la escena `'+sceneName+'`');
+  }
+
+  if (commandName === 'cámara') {
+    const position = options.getString('posición');
+    obsClient.send('SetSourceFilterVisibility', { sourceName: 'Live', filterName: position, filterEnabled: true}).catch(err => console.log(err));
+    
+    if (position === 'Face Cam Chat') {
+      obsClient.send('SetSourceFilterVisibility', { sourceName: 'Live', filterName: 'Chat Show', filterEnabled: true}).catch(err => console.log(err));
+    } else {
+      obsClient.send('SetSourceFilterVisibility', { sourceName: 'Live', filterName: 'Chat Hide', filterEnabled: true}).catch(err => console.log(err));
+    }
+    interaction.reply(':white_check_mark: Obs en la escena `'+position+'`');
   }
 });
 

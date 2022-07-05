@@ -56,29 +56,33 @@ discordClient.on('interactionCreate', async interaction => {
           channel.send(':clock3: `Subscribiendo los eventos`').then((message) => {
             twitchApi.eventSub.get().then(({data}) => {
               const ids = data.total > 0 ? data.data.map(item => item.id) : [];
-              Promise.all(ids.map(id => {id => {
-                return twitchApi.eventSub.delete(`?id=${id})`);
-              }})).then(() => {
-                // Promise.all(events.map(({type, condition}) => {
-                //   return twitchApi.eventSub({
-                //     method: 'POST',
-                //     data: {
-                //       'type': type,
-                //       'version': '1',
-                //       'condition': condition,
-                //       'transport':{
-                //         'method': 'webhook',
-                //         'callback': 'https://jcampbellg.me/eventsub/callback',
-                //         'secret': process.env.TWITCH_CLIENT_ID
-                //       }
-                //     }
-                //   });
-                // })).then(() => {
-                //   message.edit(':white_check_mark: `Subscribiendo los eventos`');
-                // }).catch(err => {
-                //   console.log(err);
-                //   message.edit(':x: `Error subscribiendo los eventos` ```'+JSON.stringify(err, undefined, 2)+'```');
-                // });
+              console.log(ids);
+              Promise.all(ids.map(id => {
+                return twitchApi.eventSub({
+                  method: 'DELETE',
+                  url: `?id=${id}`
+                });
+              })).then(() => {
+                Promise.all(events.map(({type, condition}) => {
+                  return twitchApi.eventSub({
+                    method: 'POST',
+                    data: {
+                      'type': type,
+                      'version': '1',
+                      'condition': condition,
+                      'transport':{
+                        'method': 'webhook',
+                        'callback': 'https://jcampbellg.me/eventsub/callback',
+                        'secret': process.env.TWITCH_CLIENT_ID
+                      }
+                    }
+                  });
+                })).then(() => {
+                  message.edit(':white_check_mark: `Subscribiendo los eventos`');
+                }).catch(err => {
+                  console.log(err);
+                  message.edit(':x: `Error subscribiendo los eventos` ```'+JSON.stringify(err, undefined, 2)+'```');
+                });
               }).catch(err => {
                 message.edit(':x: `Error eliminando los eventos` ```'+JSON.stringify(err, undefined, 2)+'```');
               });

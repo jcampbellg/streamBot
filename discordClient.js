@@ -56,7 +56,6 @@ discordClient.on('interactionCreate', async interaction => {
           channel.send(':clock3: `Subscribiendo los eventos`').then((message) => {
             twitchApi.eventSub.get().then(({data}) => {
               const ids = data.total > 0 ? data.data.map(item => item.id) : [];
-              console.log(ids);
               Promise.all(ids.map(id => {
                 return twitchApi.eventSub({
                   method: 'DELETE',

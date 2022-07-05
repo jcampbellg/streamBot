@@ -45,8 +45,8 @@ server.on('listening', () => {
 server.listen(PORT);
 discordClient.login(process.env.DISCORD_BOT_TOKEN);
 
-obs.connect('ws://127.0.0.1:4444', undefined, {rpcVersion: 1}).then((data) => {
-  console.log('connected to obs');
-}).catch((err) => {
-  console.error(err);
+obs.connect({address: process.env.OBS_URL});
+
+obs.on('SwitchScenes', data => {
+  console.log('SwitchScenes', data);
 });

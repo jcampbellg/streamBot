@@ -1,12 +1,13 @@
+import dotenv from 'dotenv';
+dotenv.config();
 import cors from 'cors';
 import fs from 'fs';
 import express from 'express';
 import bodyParser from 'body-parser';
 import http from 'http';
 import https from 'https';
-import dotenv from 'dotenv';
 import discordClient from './discordClient.js';
-dotenv.config();
+import eventsub from './routes/eventsub.js';
 
 const PORT = process.env.PORT || 80;
 
@@ -49,6 +50,8 @@ app.get('/', (req, res, next) => {
 app.get('/.well-known/acme-challenge/wLh1R-NgGZXRVjM6erfijyq08pIStq9dhZE0CafsMD8', (req, res, next) => {
   res.send("wLh1R-NgGZXRVjM6erfijyq08pIStq9dhZE0CafsMD8.BxeFoaCABavJSUILsmYKMH_SFQccHneTkogWk9jnfHA");
 });
+
+app.use('/eventsub', eventsub);
 
 // SERVER
 app.set('port', PORT);

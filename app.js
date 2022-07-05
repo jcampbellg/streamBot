@@ -4,6 +4,8 @@ import bodyParser from 'body-parser';
 import http from 'http';
 import dotenv from 'dotenv';
 import discordClient from './discordClient.js';
+import OBSWebSocket from 'obs-websocket-js';
+const obs = new OBSWebSocket();
 dotenv.config();
 
 const PORT = process.env.PORT || 8080;
@@ -42,3 +44,9 @@ server.on('listening', () => {
 
 server.listen(PORT);
 discordClient.login(process.env.DISCORD_BOT_TOKEN);
+
+obs.connect('ws://172.30.174.48:4444', undefined, {rpcVersion: 1}).then((data) => {
+  console.log(data);
+}).catch((err) => {
+  console.error(err);
+});

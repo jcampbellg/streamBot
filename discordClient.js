@@ -34,7 +34,8 @@ discordClient.on('interactionCreate', async interaction => {
 
 	const { commandName } = interaction;
   if (commandName === 'empezar') {
-    obsClient.connect(process.env.OBS_URL).then(() => {
+    obsClient.connect('ws://173.30.174.48:4444').then((data) => {
+      console.log(data);
       interaction.reply('Conectado a OBS');
     }).catch((err) => {
       console.error(err);

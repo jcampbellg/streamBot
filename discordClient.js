@@ -14,7 +14,7 @@ const commands = [
     .setDescription('Conectarse a OBS y Twitch'),
   new SlashCommandBuilder()
     .setName('escena')
-    .setDescription('Cambiar la escena'),
+    .setDescription('Cambiar la escena')
     .addStringOption(option =>
       option.setName('escena').setDescription('Escena a cambiar').setRequired(true).addChoices(
         {value: 'Live', name: 'En Vivo'},

@@ -4,8 +4,6 @@ import bodyParser from 'body-parser';
 import http from 'http';
 import dotenv from 'dotenv';
 import discordClient from './discordClient.js';
-import OBSWebSocket from 'obs-websocket-js';
-const obs = new OBSWebSocket();
 dotenv.config();
 
 const PORT = process.env.PORT || 8080;
@@ -44,9 +42,3 @@ server.on('listening', () => {
 
 server.listen(PORT);
 discordClient.login(process.env.DISCORD_BOT_TOKEN);
-
-obs.connect({address: process.env.OBS_URL});
-
-obs.on('SwitchScenes', data => {
-  console.log('SwitchScenes', data);
-});

@@ -32,14 +32,15 @@ discordClient.once('ready', () => {
 discordClient.on('interactionCreate', async interaction => {
   if (!interaction.isCommand()) return;
 
-	const { commandName } = interaction;
+	const { commandName, channel } = interaction;
   if (commandName === 'empezar') {
-    obsClient.connect('ws://173.30.174.48:4444').then((data) => {
-      console.log(data);
-      interaction.reply('Conectado a OBS');
+    obsClient.connect({address: process.env.OBS_URL}).then((data) => {
+      interaction.reply(':white_check_mark: `Conectado a OBS`');
+      channel.send(':clock3: `Subscribiendo eventos de Twitch...`').then((message) => {
+        console.log(message)
+      });
     }).catch((err) => {
-      console.error(err);
-      interaction.reply('Error conectando a OBS: ```'+JSON.stringify(err, undefined, 2)+'```');
+      interaction.reply(':x: `Error conectando a OBS:` ```'+JSON.stringify(err, undefined, 2)+'```');
     });
   }
 });

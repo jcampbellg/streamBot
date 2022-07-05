@@ -114,35 +114,37 @@ discordClient.on('interactionCreate', async interaction => {
     });
   }
 
-  if (commandName === 'escena' || commandName === 'cámara') {
-    if (obsOnline) {
-      interaction.reply(':x: OBS no esta conectado');
-      return;
-    }
-  }
+  let error = false;
+  const OBSerror = (err) => {
+    error = true;
+    interaction.reply(':x: Error en OBS: ```'+JSON.stringify(err, undefined, 2)+'```');
+  };
+
 
   if (commandName === 'escena') {
     const sceneName = options.getString('escena');
-    obsClient.send('SetCurrentScene', {'scene-name': sceneName }).catch(err => console.log(err));;
+    obsClient.send('SetCurrentScene', {'scene-name': sceneName }).catch(OBSerror);;
 
     if (sceneName === 'Live') {
-      obsClient.send('SetSourceFilterVisibility', { sourceName: 'Sounds', filterName: 'Desktop', filterEnabled: true}).catch(err => console.log(err));
-      obsClient.send('SetSourceFilterVisibility', { sourceName: 'Sounds', filterName: 'MIC', filterEnabled: true}).catch(err => console.log(err));
-      obsClient.send('SetSourceFilterVisibility', { sourceName: 'Live', filterName: 'Face Cam Chat', filterEnabled: true}).catch(err => console.log(err));
-      obsClient.send('SetSourceFilterVisibility', { sourceName: 'Live', filterName: 'Chat Show', filterEnabled: true}).catch(err => console.log(err));
+      obsClient.send('SetSourceFilterVisibility', { sourceName: 'Sounds', filterName: 'Desktop', filterEnabled: true}).catch(OBSerror);
+      obsClient.send('SetSourceFilterVisibility', { sourceName: 'Sounds', filterName: 'MIC', filterEnabled: true}).catch(OBSerror);
+      obsClient.send('SetSourceFilterVisibility', { sourceName: 'Live', filterName: 'Face Cam Chat', filterEnabled: true}).catch(OBSerror);
+      obsClient.send('SetSourceFilterVisibility', { sourceName: 'Live', filterName: 'Chat Show', filterEnabled: true}).catch(OBSerror);
     }
+    if (error) return;
     interaction.reply(':white_check_mark: OBS en la escena `'+sceneName+'`');
   }
 
   if (commandName === 'cámara') {
     const position = options.getString('posición');
-    obsClient.send('SetSourceFilterVisibility', { sourceName: 'Live', filterName: position, filterEnabled: true}).catch(err => console.log(err));
+    obsClient.send('SetSourceFilterVisibility', { sourceName: 'Live', filterName: position, filterEnabled: true}).catch(OBSerror);
 
     if (position === 'Face Cam Chat') {
-      obsClient.send('SetSourceFilterVisibility', { sourceName: 'Live', filterName: 'Chat Show', filterEnabled: true}).catch(err => console.log(err));
+      obsClient.send('SetSourceFilterVisibility', { sourceName: 'Live', filterName: 'Chat Show', filterEnabled: true}).catch(OBSerror);
     } else {
-      obsClient.send('SetSourceFilterVisibility', { sourceName: 'Live', filterName: 'Chat Hide', filterEnabled: true}).catch(err => console.log(err));
+      obsClient.send('SetSourceFilterVisibility', { sourceName: 'Live', filterName: 'Chat Hide', filterEnabled: true}).catch(OBSerror);
     }
+    if (error) return;
     interaction.reply(':white_check_mark: Cámara se movia a `'+position+'`');
   }
 });

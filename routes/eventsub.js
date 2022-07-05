@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 import express from 'express';
 import discordClient from '../discordClient.js';
+import obsClient from '../obsClient.js';
 const router = express.Router();
 
 router.post('/callback', (req, res, next) => { 
@@ -11,10 +12,18 @@ router.post('/callback', (req, res, next) => {
       break;
     case 'notification':
       const event = req.body.event;
-      res.json(event);
       discordClient.channels.fetch(process.env.DISCORD_NOTIFICATION_CHANNEL).then(channel => {
         channel.send('```'+JSON.stringify(event, undefined, 2)+'```');
       });
+
+      switch (event.reward.title) {
+        case 'SIIUUU':
+          obsClient.send('RestartMedia', { source: 'SIUUU' }).catch(err => console.log(err));
+          break;
+        default:
+          break;
+      }
+      res.sendStatus(204);
       break;
     default:
       res.sendStatus(204);

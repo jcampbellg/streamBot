@@ -1,4 +1,5 @@
 import cors from 'cors';
+import fs from 'fs';
 import express from 'express';
 import bodyParser from 'body-parser';
 import http from 'http';

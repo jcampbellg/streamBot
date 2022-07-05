@@ -33,6 +33,10 @@ app.get('/', (req, res, next) => {
   res.send("<h1>Hellow World!</h1>");
 });
 
+app.get('/.well-known/acme-challenge/wLh1R-NgGZXRVjM6erfijyq08pIStq9dhZE0CafsMD8', (req, res, next) => {
+  res.send("wLh1R-NgGZXRVjM6erfijyq08pIStq9dhZE0CafsMD8.BxeFoaCABavJSUILsmYKMH_SFQccHneTkogWk9jnfHA");
+});
+
 // SERVER
 app.set('port', PORT);
 const server = http.createServer(app);

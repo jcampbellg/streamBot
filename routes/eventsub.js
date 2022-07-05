@@ -6,13 +6,13 @@ const router = express.Router();
 
 router.post('/callback', (req, res, next) => {
   const notification = req.body.notification;
-  const event = notification.event;
-  console.log(req.headers)
+  
   switch (req.headers['twitch-eventsub-message-type']) {
     case 'webhook_callback_verification':
       res.status(200).send(notification.challenge);
       break;
     case 'notification':
+      const event = notification.event;
       res.json(event);
       discordClient.channels.fetch(process.env.DISCORD_NOTIFICATION_CHANNEL).then(channel => {
         channel.send('```'+JSON.stringify(event, undefined, 2)+'```');

@@ -4,7 +4,7 @@ import { Client, Intents } from 'discord.js'
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { REST } from '@discordjs/rest';
 import { Routes } from 'discord-api-types/v9';
-import obsClient, { obsOnline } from './obsClient.js';
+import obsClient from './obsClient.js';
 import twitchApi from './twitchApi.js';
 import { events } from './constants.js';
 

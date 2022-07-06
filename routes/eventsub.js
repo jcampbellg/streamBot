@@ -45,7 +45,7 @@ router.post('/callback', (req, res, next) => {
               }
             }).then(({data}) => {
               const i = Math.floor(Math.random() * data.data.length - 1);
-              const gifUrl = data.data[i].images.embed_url;
+              const gifUrl = data.data[i].embed_url;
 
               obsClient.send('SetBrowserSourceProperties', {source: 'Random Gif', url: gifUrl}).catch(err => { console.log(err); });
               obsClient.send('SetSceneItemRender', {'scene-name': 'Stream Points', source: 'Random Gif', render: true}).catch(err => { console.log(err); });

@@ -45,7 +45,7 @@ router.post('/callback', (req, res, next) => {
               }
             }).then(({data}) => {
               const i = Math.floor(Math.random() * 24);
-              const gifUrl = data.data[i].images;
+              const gifUrl = data.data[i].images.orginal.url;
               console.log(gifUrl);
 
               obsClient.send('SetBrowserSourceProperties', {source: 'Random Gif', url: gifUrl}).catch(err => { console.log(err); });

@@ -52,7 +52,7 @@ router.post('/callback', (req, res, next) => {
     
               setTimeout(() => {
                 obsClient.send('SetSceneItemRender', {'scene-name': 'Stream Points', source: 'Random Gif', render: false}).catch(err => { console.log(err); });
-              }, 10000);
+              }, 20000);
             }).catch(err => { console.log(err); });
             break;
           default:

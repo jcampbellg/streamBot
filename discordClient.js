@@ -49,7 +49,7 @@ rest.put(Routes.applicationGuildCommands(process.env.DISCORD_APP_ID, process.env
   .then(() =>console.log('Successfully registered application commands.'))
   .catch(console.error);
 
-rest.put(Routes.applicationGuildCommands(process.env.DISCORD_APP_ID, process.env.DISCORD_EVEN_SERVER), { body: commands })
+rest.put(Routes.applicationGuildCommands(process.env.DISCORD_APP_ID, process.env.DISCORD_EVEN_SERVER), { body: commandsEven })
   .then(() =>console.log('Successfully registered application commands.'))
   .catch(console.error);
 

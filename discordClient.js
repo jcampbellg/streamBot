@@ -142,6 +142,7 @@ discordClient.on('interactionCreate', async interaction => {
       obsClient.send('SetSourceFilterVisibility', { sourceName: 'Sounds', filterName: 'MIC', filterEnabled: true}).catch(err => console.log(err));
       obsClient.send('SetSourceFilterVisibility', { sourceName: 'Live', filterName: 'Face Cam Chat', filterEnabled: true}).catch(err => console.log(err));
       obsClient.send('SetSourceFilterVisibility', { sourceName: 'Live', filterName: 'Chat Show', filterEnabled: true}).catch(err => console.log(err));
+      obsClient.send('SetSceneItemRender', {'scene-name': 'Live', source: 'Game Source', render: false}).catch(err => { console.log(err); });
     }
     interaction.reply(':white_check_mark: OBS en la escena `'+sceneName+'`');
   }
@@ -152,8 +153,10 @@ discordClient.on('interactionCreate', async interaction => {
 
     if (position === 'Face Cam Chat') {
       obsClient.send('SetSourceFilterVisibility', { sourceName: 'Live', filterName: 'Chat Show', filterEnabled: true}).catch(err => console.log(err));
+      obsClient.send('SetSceneItemRender', {'scene-name': 'Live', source: 'Game Source', render: false}).catch(err => { console.log(err); });
     } else {
       obsClient.send('SetSourceFilterVisibility', { sourceName: 'Live', filterName: 'Chat Hide', filterEnabled: true}).catch(err => console.log(err));
+      obsClient.send('SetSceneItemRender', {'scene-name': 'Live', source: 'Game Source', render: true}).catch(err => { console.log(err); });
     }
     interaction.reply(':white_check_mark: Cámara se movia a `'+position+'`');
   }

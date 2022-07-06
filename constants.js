@@ -17,3 +17,20 @@ export const events = [
   {type: 'channel.prediction.lock', condition: {'broadcaster_user_id': process.env.TWITCH_CHANNEL_ID}},
   {type: 'channel.prediction.end', condition: {'broadcaster_user_id': process.env.TWITCH_CHANNEL_ID}}
 ];
+
+export const eventsType = {
+  subscriptionMessage: 'channel.subscription.message',
+  subscribe: 'channel.subscribe',
+  follow: 'channel.follow',
+  redemption: 'channel.channel_points_custom_reward_redemption.add',
+  subscriptionGift: 'channel.subscription.gift',
+  cheer: 'channel.cheer',
+  raid: 'channel.raid',
+  pollBegin: 'channel.poll.begin',
+  pollProgress: 'channel.poll.progress',
+  pollEnd: 'channel.poll.end',
+  predictionBegin: 'channel.prediction.begin',
+  predictionProgress: 'channel.prediction.progress',
+  predictionLock: 'channel.prediction.lock',
+  predictionEnd: 'channel.prediction.end'
+};

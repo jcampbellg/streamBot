@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 import { Client, Intents } from 'discord.js'
 import { SlashCommandBuilder } from '@discordjs/builders';
+import { joinVoiceChannel, createAudioResource, StreamType, createAudioPlayer } from '@discordjs/voice';
 import { REST } from '@discordjs/rest';
 import { Routes } from 'discord-api-types/v9';
 import obsClient from './obsClient.js';
@@ -184,14 +185,16 @@ discordClient.on('interactionCreate', async interaction => {
 });
 
 export const playAudio = (text) => {
-  gtts('es').save(`./call_jcampbellg.wav`, text, (err) => {
-    const resource = createAudioResource(`./call_jcampbellg.wav`, {
-      inputType: StreamType.Arbitrary
-    });
+  if (voiceConnection) {
+    gtts('es').save(`./call_jcampbellg.wav`, text, (err) => {
+      const resource = createAudioResource(`./call_jcampbellg.wav`, {
+        inputType: StreamType.Arbitrary
+      });
 
-    player.play(resource);
-    voiceConnection.subscribe(player);
-  });
+      player.play(resource);
+      voiceConnection.subscribe(player);
+    });
+  }
 };
 
 export default discordClient;

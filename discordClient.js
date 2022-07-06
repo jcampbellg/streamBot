@@ -187,6 +187,9 @@ discordClient.on('interactionCreate', async interaction => {
 export const playAudio = (text) => {
   console.log(text);
   gtts('es').save(`./call_jcampbellg.wav`, text, (err) => {
+    if (err) {
+      console.log(err);
+    }
     const resource = createAudioResource(`./call_jcampbellg.wav`, {
       inputType: StreamType.Arbitrary
     });

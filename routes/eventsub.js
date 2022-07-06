@@ -65,6 +65,28 @@ router.post('/callback', (req, res, next) => {
         }
       }
 
+      let followText = null;
+
+      if (subscription.type === eventsType.follow) {
+        followText = `¡${event.user_name} te esta siguiendo!`;
+      }
+      if (subscription.type === eventsType.subscriptionGift || subscription.type === eventsType.subscribe) {
+        followText = `¡${event.user_name} se ha suscrito a tu canal!`;
+      }
+      if (subscription.type === eventsType.subscriptionMessage) {
+        followText = `¡${event.user_name} se ha suscrito a tu canal! ${event.message.text}`;
+      }
+      if (subscription.type === eventsType.cheer) {
+        followText = `¡${event.user_name} te ha dado ${event.bits} bits! ${event.message}`;
+      }
+      if (subscription.type === eventsType.raid) {
+        followText = `¡${event.from_broadcaster_user_name} ha hecho un raid junto con ${event.viewers} personas!`;
+      }
+
+      if (followText) {
+        obsClient.send('RestartMedia', { sourceName: 'Alert Video' }).catch(err => console.log(err));
+        obsClient.send('SetTextGDIPlusProperties', {source: 'Follow Text', text: followText}).catch(err => console.log(err));
+      }
       res.sendStatus(204);
       break;
     default:

@@ -185,16 +185,15 @@ discordClient.on('interactionCreate', async interaction => {
 });
 
 export const playAudio = (text) => {
-  if (voiceConnection) {
-    gtts('es').save(`./call_jcampbellg.wav`, text, (err) => {
-      const resource = createAudioResource(`./call_jcampbellg.wav`, {
-        inputType: StreamType.Arbitrary
-      });
-
-      player.play(resource);
-      voiceConnection.subscribe(player);
+  console.log(text);
+  gtts('es').save(`./call_jcampbellg.wav`, text, (err) => {
+    const resource = createAudioResource(`./call_jcampbellg.wav`, {
+      inputType: StreamType.Arbitrary
     });
-  }
+
+    player.play(resource);
+    voiceConnection.subscribe(player);
+  });
 };
 
 export default discordClient;

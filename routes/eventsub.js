@@ -49,11 +49,13 @@ router.post('/callback', (req, res, next) => {
               const gifUrl = availableGifs[i].embed_url;
 
               obsClient.send('SetBrowserSourceProperties', {source: 'Random Gif', url: gifUrl}).catch(err => { console.log(err); });
-              obsClient.send('SetSceneItemRender', {'scene-name': 'Stream Points', source: 'Random Gif', render: true}).catch(err => { console.log(err); });
-    
+
               setTimeout(() => {
-                obsClient.send('SetSceneItemRender', {'scene-name': 'Stream Points', source: 'Random Gif', render: false}).catch(err => { console.log(err); });
-              }, 20000);
+                obsClient.send('SetSceneItemRender', {'scene-name': 'Stream Points', source: 'Random Gif', render: true}).catch(err => { console.log(err); });
+                setTimeout(() => {
+                  obsClient.send('SetSceneItemRender', {'scene-name': 'Stream Points', source: 'Random Gif', render: false}).catch(err => { console.log(err); });
+                }, 20000);
+              }, 1000);
             }).catch(err => { console.log(err); });
             break;
           default:

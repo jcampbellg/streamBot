@@ -44,7 +44,7 @@ router.post('/callback', (req, res, next) => {
                 lang: 'es'
               }
             }).then(({data}) => {
-              const availableGifs = data.data.filter(gif => gif.embed_url);
+              const availableGifs = data.data.filter(gif => gif && gif.embed_url);
               const i = Math.floor(Math.random() * availableGifs.length - 1);
               const gifUrl = availableGifs[i].embed_url;
             
@@ -58,7 +58,7 @@ router.post('/callback', (req, res, next) => {
                   }, 10000);
                 }
               });
-            }).catch(err => { console.log(err); });
+            }).catch(err => { console.error(err); });
             break;
           default:
             break;

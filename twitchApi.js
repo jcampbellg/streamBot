@@ -17,8 +17,15 @@ const authorize = axios.create({
   }
 });
 
+const giphy = axios.create({
+  baseURL: 'https://api.giphy.com/v1/gifs',
+  headers: {
+    'Content-Type': 'application/json'
+  }
+});
+
 const twitchApi = {
-  eventSub, authorize
+  eventSub, authorize, giphy
 };
 
 export default twitchApi;

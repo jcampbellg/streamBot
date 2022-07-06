@@ -3,6 +3,7 @@ dotenv.config();
 import express from 'express';
 import discordClient, { playAudio } from '../discordClient.js';
 import obsClient from '../obsClient.js';
+import twitchApi from '../twitchApi.js';
 const router = express.Router();
 
 router.post('/callback', (req, res, next) => { 
@@ -31,6 +32,25 @@ router.post('/callback', (req, res, next) => {
           break;
         case 'Dame un Call (TTS)':
           playAudio(`${event.user_name} dice: ${event.user_input}`);
+          break;
+        case 'Random Gif':
+          twitchApi.giphy.get('/search', {
+            params: {
+              api_key: 'tWzC5FFP4o7ZuMs7VCYTx5z9y0JM45MI',
+              q: event.user_input,
+              limit: 25,
+              lang: 'es'
+            }
+          }).then(({data}) => {
+            console.log(data);
+            const gifUrl = data[0].images.original.url;
+            obsClient.send('SetBrowserSourceProperties', {source: 'Random Gif', url: gifUrl}).catch(err => { console.log(err); });
+            obsClient.send('SetSceneItemRender', {'scene-name': 'Stream Points', source: 'Random Gif', render: true}).catch(err => { console.log(err); });
+  
+            setTimeout(() => {
+              obsClient.send('SetSceneItemRender', {'scene-name': 'Stream Points', source: 'Random Gif', render: false}).catch(err => { console.log(err); });
+            }, 10000);
+          }).catch(err => { console.log(err); });
           break;
         default:
           break;

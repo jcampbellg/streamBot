@@ -135,7 +135,7 @@ discordClient.on('interactionCreate', async interaction => {
   // escena
   if (commandName === 'escena') {
     const sceneName = options.getString('escena');
-    obsClient.send('SetCurrentScene', {'scene-name': sceneName }).catch(OBSerror);;
+    obsClient.send('SetCurrentScene', {'scene-name': sceneName }).catch(err => console.log(err));;
 
     if (sceneName === 'Live') {
       obsClient.send('SetSourceFilterVisibility', { sourceName: 'Sounds', filterName: 'Desktop', filterEnabled: true}).catch(err => console.log(err));
@@ -143,7 +143,6 @@ discordClient.on('interactionCreate', async interaction => {
       obsClient.send('SetSourceFilterVisibility', { sourceName: 'Live', filterName: 'Face Cam Chat', filterEnabled: true}).catch(err => console.log(err));
       obsClient.send('SetSourceFilterVisibility', { sourceName: 'Live', filterName: 'Chat Show', filterEnabled: true}).catch(err => console.log(err));
     }
-    if (error) return;
     interaction.reply(':white_check_mark: OBS en la escena `'+sceneName+'`');
   }
   // cámara
@@ -156,7 +155,6 @@ discordClient.on('interactionCreate', async interaction => {
     } else {
       obsClient.send('SetSourceFilterVisibility', { sourceName: 'Live', filterName: 'Chat Hide', filterEnabled: true}).catch(err => console.log(err));
     }
-    if (error) return;
     interaction.reply(':white_check_mark: Cámara se movia a `'+position+'`');
   }
 

@@ -47,15 +47,18 @@ router.post('/callback', (req, res, next) => {
               const availableGifs = data.data.filter(gif => gif.embed_url);
               const i = Math.floor(Math.random() * availableGifs.length - 1);
               const gifUrl = availableGifs[i].embed_url;
-
-              obsClient.send('SetBrowserSourceProperties', {source: 'Random Gif', url: gifUrl}).catch(err => { console.log(err); });
-
-              setTimeout(() => {
-                obsClient.send('SetSceneItemRender', {'scene-name': 'Stream Points', source: 'Random Gif', render: true}).catch(err => { console.log(err); });
-                setTimeout(() => {
-                  obsClient.send('SetSceneItemRender', {'scene-name': 'Stream Points', source: 'Random Gif', render: false}).catch(err => { console.log(err); });
-                }, 20000);
-              }, 1000);
+            
+              obsClient.sendCallback('CreateSource', {sceneName: 'Stream Points', sourceName: 'Random Gif', sourceKind: 'browser_source', sourceSettings: {url: gifUrl, width: 500, height: 400}}, (err, res) => {
+                if (err) {
+                  console.log(err);
+                } else {
+                  obsClient.send('SetSceneItemProperties', {'scene-name': 'Stream Points', item: 'Random Gif', position: {x: 710, y: 0}}).catch(err => { console.log(err); });
+                  console.log(res);
+                  setTimeout(() => {
+                    obsClient.send('DeleteSceneItem', {scene: 'Stream Points', item: {name: 'Random Gif'}}).catch(err => { console.log(err); });
+                  }, 10000);
+                }
+              });
             }).catch(err => { console.log(err); });
             break;
           default:

@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 dotenv.config();
 import express from 'express';
-import discordClient from '../discordClient.js';
+import discordClient, { playAudio } from '../discordClient.js';
 import obsClient from '../obsClient.js';
 const router = express.Router();
 
@@ -28,6 +28,9 @@ router.post('/callback', (req, res, next) => {
           setTimeout(() => {
             obsClient.send('SetSceneItemRender', {'scene-name': 'Stream Points', source: 'New Message', render: false}).catch(err => { console.log(err); });
           }, 10000);
+          break;
+        case 'Dame un Call (TTS)':
+          playAudio(`${event.user_name} dice: ${event.user_input}`);
           break;
         default:
           break;

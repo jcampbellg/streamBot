@@ -7,6 +7,7 @@ import { Routes } from 'discord-api-types/v9';
 import obsClient from './obsClient.js';
 import twitchApi from './twitchApi.js';
 import { events } from './constants.js';
+import gtts from 'node-gtts';
 
 const commands = [
   new SlashCommandBuilder()
@@ -30,11 +31,24 @@ const commands = [
         {value: 'Face Cam DL Small', name: 'Abajo Izquierda'},
         {value: 'Face Cam Chat', name: 'Camara de Chat'},
       )
-    )
+    ),
+  new SlashCommandBuilder()
+    .setName('activar-voz')
+    .setDescription('TTS en discord')
+].map(command => command.toJSON());
+
+const commandsEven = [
+  new SlashCommandBuilder()
+    .setName('activar-voz')
+    .setDescription('TTS en discord')
 ].map(command => command.toJSON());
 
 const rest = new REST({ version: '9' }).setToken(process.env.DISCORD_BOT_TOKEN);
 rest.put(Routes.applicationGuildCommands(process.env.DISCORD_APP_ID, process.env.DISCORD_JUAN_SERVER), { body: commands })
+  .then(() =>console.log('Successfully registered application commands.'))
+  .catch(console.error);
+
+rest.put(Routes.applicationGuildCommands(process.env.DISCORD_APP_ID, process.env.DISCORD_EVEN_SERVER), { body: commands })
   .then(() =>console.log('Successfully registered application commands.'))
   .catch(console.error);
 
@@ -50,9 +64,13 @@ discordClient.once('ready', () => {
 	console.log('Discord is ready!');
 });
 
+let player;
+let voiceConnection;
+
 discordClient.on('interactionCreate', async interaction => {
   if (!interaction.isCommand()) return;
-	const { commandName, channel, options } = interaction;
+	const { commandName, channel, options, member, guildId, guild } = interaction;
+  const botMember = await interaction.guild.members.fetch(process.env.DISCORD_APP_ID);
   // empezar
   if (commandName === 'empezar') {
     obsClient.connect({address: process.env.OBS_URL}).then((data) => {
@@ -140,6 +158,40 @@ discordClient.on('interactionCreate', async interaction => {
     if (error) return;
     interaction.reply(':white_check_mark: Cámara se movia a `'+position+'`');
   }
+
+  // activar voz
+  if (commandName === 'activar-voz') {
+    if (!member.voice.channelId) {
+      interaction.reply('Ocupa un canal de voz para activar la voz');
+      return;
+    }
+  
+    if (botMember.voice.channelId) {
+      interaction.reply('El robot ya está en un canal de voz');
+      return;
+    }
+
+    player = createAudioPlayer();
+    voiceConnection = joinVoiceChannel({
+      channelId: member.voice.channelId,
+      guildId: guildId,
+      adapterCreator: guild.voiceAdapterCreator,
+      selfDeaf: false
+    });
+
+    interaction.reply(':white_check_mark: `Activando voz`');
+  }
 });
+
+export const playAudio = (text) => {
+  gtts('es').save(`./call_jcampbellg.wav`, text, (err) => {
+    const resource = createAudioResource(`./call_jcampbellg.wav`, {
+      inputType: StreamType.Arbitrary
+    });
+
+    player.play(resource);
+    voiceConnection.subscribe(player);
+  });
+};
 
 export default discordClient;

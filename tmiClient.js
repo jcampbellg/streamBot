@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 dotenv.config();
 import tmi from 'tmi.js';
-import { cmdActions } from './constants';
+import { cmdActions } from './constants.js';
 import obsClient from './obsClient.js';
 
 const regexCommand = new RegExp(/^!([a-zA-Z0-9]+)\W+([a-zA-Z0-9+()-]+)(?:\W+)?(.*)?/)

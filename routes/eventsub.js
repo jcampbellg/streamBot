@@ -85,7 +85,12 @@ router.post('/callback', (req, res, next) => {
 
       if (followText) {
         obsClient.send('RestartMedia', { sourceName: 'Alert Video' }).catch(err => console.log(err));
+        obsClient.send('SetSceneItemRender', {'scene-name': 'Alerts', source: 'Follow Text', render: true}).catch(err => { console.log(err); });
         obsClient.send('SetTextGDIPlusProperties', {source: 'Follow Text', text: followText}).catch(err => console.log(err));
+
+        setTimeout(() => {
+          obsClient.send('SetSceneItemRender', {'scene-name': 'Alerts', source: 'Follow Text', render: false}).catch(err => { console.log(err); });
+        }, 4000);
       }
       res.sendStatus(204);
       break;

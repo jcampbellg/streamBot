@@ -34,3 +34,9 @@ export const eventsType = {
   predictionLock: 'channel.prediction.lock',
   predictionEnd: 'channel.prediction.end'
 };
+
+export const cmdActions = {
+  add: ['add', 'sumar', '+', 'a', 'añadir', 'agregar', 'anadir'],
+  subtract: ['sub', 'subtract', '-', 's', 'restar', 'quitar', 'remove', 'rm'],
+  clear: ['clear', 'limpiar', 'c', 'reset', 'resetear', 'reiniciar'],
+};

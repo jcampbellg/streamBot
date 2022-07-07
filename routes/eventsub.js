@@ -52,6 +52,7 @@ router.post('/callback', (req, res, next) => {
                 if (err) {
                   console.log(err);
                 } else {
+                  obsClient.send('RestartMedia', { sourceName: 'Alert Gif' }).catch(err => console.log(err));
                   obsClient.send('SetSceneItemProperties', {'scene-name': 'Stream Points', item: 'Random Gif', position: {x: 710, y: 0}}).catch(err => { console.log(err); });
                   setTimeout(() => {
                     obsClient.send('DeleteSceneItem', {scene: 'Stream Points', item: {name: 'Random Gif'}}).catch(err => { console.log(err); });

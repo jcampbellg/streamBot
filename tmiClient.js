@@ -60,15 +60,9 @@ tmiClient.on('message', (channel, tags, message, self) => {
     setTimeout(() => {
       obsClient.send('SetSceneItemRender', {'scene-name': 'Chat CMD', source: 'Flashes', render: false}).catch(err => { console.log(err); });
     }, 4000);
-    tmiClient.say(channel, `${flashes} flashes!`);
+    tmiClient.say(channel, `Flahses de hoy: ${flashes} flashes`);
   }
 
-});
-
-tmiClient.on('join', (channel, username, message, self) => {
-  if(self) return;
-
-  tmiClient.say(channel, `¡${username} Bienvenido a mi stream!`);
 });
 
 export default tmiClient;

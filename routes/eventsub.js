@@ -74,10 +74,12 @@ router.post('/callback', (req, res, next) => {
         followText = `¡${event.user_name} se ha suscrito a tu canal!`;
       }
       if (subscription.type === eventsType.subscriptionMessage) {
-        followText = `¡${event.user_name} se ha suscrito a tu canal! ${event.message.text}`;
+        followText = `¡${event.user_name} se ha suscrito a tu canal!
+${event.message.text}`;
       }
       if (subscription.type === eventsType.cheer) {
-        followText = `¡${event.user_name} te ha dado ${event.bits} bits! ${event.message}`;
+        followText = `¡${event.user_name} te ha dado ${event.bits} bits!
+${event.message}`;
       }
       if (subscription.type === eventsType.raid) {
         followText = `¡${event.from_broadcaster_user_name} ha hecho un raid junto con ${event.viewers} personas!`;

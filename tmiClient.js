@@ -48,3 +48,5 @@ tmiClient.on('join', (channel, username, message, self) => {
 
   tmiClient.say(channel, `¡${username} Bienvenido a mi stream!`);
 });
+
+export default tmiClient;

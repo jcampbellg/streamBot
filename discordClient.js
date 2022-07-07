@@ -9,11 +9,15 @@ import obsClient from './obsClient.js';
 import twitchApi from './twitchApi.js';
 import { events } from './constants.js';
 import gtts from 'node-gtts';
+import tmiClient from './tmiClient.js';
 
 const commands = [
   new SlashCommandBuilder()
     .setName('empezar')
     .setDescription('Conectarse a OBS y Twitch'),
+  new SlashCommandBuilder()
+    .setName('terminar')
+    .setDescription('desconectarse de Twitch chat'),
   new SlashCommandBuilder()
     .setName('escena')
     .setDescription('Cambiar la escena')
@@ -75,6 +79,7 @@ discordClient.on('interactionCreate', async interaction => {
   // empezar
   if (commandName === 'empezar') {
     obsClient.connect({address: process.env.OBS_URL}).then((data) => {
+      tmiClient.connect();
       interaction.reply(':white_check_mark: `Conectando a OBS`');
       channel.send(':clock3: `Autorizando App...`').then((message) => {
         twitchApi.authorize({
@@ -132,6 +137,10 @@ discordClient.on('interactionCreate', async interaction => {
       interaction.reply(':x: `Error conectando a OBS:` ```'+JSON.stringify(err, undefined, 2)+'```');
     });
   }
+  // terminar
+  if (commandName === 'terminar') {
+    tmiClient.disconnect();
+  }
   // escena
   if (commandName === 'escena') {
     const sceneName = options.getString('escena');
@@ -160,7 +169,6 @@ discordClient.on('interactionCreate', async interaction => {
     }
     interaction.reply(':white_check_mark: Cámara se movia a `'+position+'`');
   }
-
   // activar voz
   if (commandName === 'activar-voz') {
     if (!member.voice.channelId) {

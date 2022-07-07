@@ -69,4 +69,3 @@ httpsServer.on('listening', () => {
 httpServer.listen(PORT);
 httpsServer.listen(443);
 discordClient.login(process.env.DISCORD_BOT_TOKEN);
-tmiClient.connect();

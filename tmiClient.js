@@ -45,7 +45,7 @@ tmiClient.on('message', (channel, tags, message, self) => {
     tmiClient.say(channel, 'Current resolution: 2560 x 1440, 270Hz');
   }
 
-  if (command.toLowerCase() === 'flash') {
+  if (['flash', 'flashes', 'blind', 'ciego', 'pajaro'].includes(command.toLowerCase())) {
     if (cmdActions.add.includes(action && action.toLowerCase())) {
       flashes++;
     } else if (cmdActions.subtract.includes(action && action.toLowerCase())) {

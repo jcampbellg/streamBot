@@ -7,10 +7,16 @@ import obsClient from './obsClient.js';
 const regexCommand = new RegExp(/^!([a-zA-Z0-9]+)\W+([a-zA-Z0-9+()-]+)(?:\W+)?(.*)?/)
 const regexJustCommand = new RegExp(/^!([a-zA-Z0-9]+)?/);
 
+let password = '';
+
+export const setPassword = (pw) => {
+  password = pw;
+};
+
 const tmiClient = new tmi.Client({
 	identity: {
 		username: 'jcampbellg',
-		password: process.env.TWITCH_BOT_PASSWORD
+		password: password
 	},
 	channels: [ 'jcampbellg' ]
 });

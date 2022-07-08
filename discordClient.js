@@ -13,6 +13,9 @@ import tmiClient from './tmiClient.js';
 
 const commands = [
   new SlashCommandBuilder()
+    .setName('autorizar')
+    .setDescription('Conectarse Twitch Chat'),
+  new SlashCommandBuilder()
     .setName('empezar')
     .setDescription('Conectarse a OBS y Twitch'),
   new SlashCommandBuilder()
@@ -123,6 +126,13 @@ discordClient.on('interactionCreate', async interaction => {
   if (!interaction.isCommand()) return;
 	const { commandName, channel, options, member, guildId, guild } = interaction;
   const botMember = await interaction.guild.members.fetch(process.env.DISCORD_APP_ID);
+  // autorizar
+  if (commandName === 'autorizar') {
+    const url = 'https://id.twitch.tv/oauth2/authorize?response_type=code&client_id=vw8l6gilfm94igd0ccsep9yw36fox9&redirect_uri=https://jcampbellg.me/token&scope=chat:read+chat:edit&state=frontend|T0VvUXN4ckdGTUVLWlZRVHMrQkVRZz09&force_verify=true';
+    const link = hyperlink('Twitch Chat Login', url);
+
+    interaction.reply(link);
+  }
   // empezar
   if (commandName === 'empezar') {
     obsClient.connect({address: process.env.OBS_URL}).then((data) => {

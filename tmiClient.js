@@ -11,6 +11,7 @@ let password = '';
 
 export const setPassword = (pw) => {
   password = pw;
+  console.log(password);
 };
 
 const tmiClient = new tmi.Client({

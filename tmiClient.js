@@ -7,14 +7,7 @@ import obsClient from './obsClient.js';
 const regexCommand = new RegExp(/^!([a-zA-Z0-9]+)\W+([a-zA-Z0-9+()-]+)(?:\W+)?(.*)?/)
 const regexJustCommand = new RegExp(/^!([a-zA-Z0-9]+)?/);
 
-let password = '';
-
-export const setPassword = (pw) => {
-  password = pw;
-  console.log(password);
-};
-
-const tmiClient = new tmi.Client({
+let tmiClient = new tmi.Client({
 	identity: {
 		username: 'jcampbellg',
 		password: 'z7wvvyxnaf5m6lqz002ipzzg6nl2h2'

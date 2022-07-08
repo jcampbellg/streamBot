@@ -139,7 +139,7 @@ discordClient.on('interactionCreate', async interaction => {
   }
   // terminar
   if (commandName === 'terminar') {
-    tmiClient.disconnect();
+    tmiClient.disconnect().catch(console.error);
     interaction.reply(':white_check_mark: `Desconectado de Twitch`');
     if (voiceConnection) {
       voiceConnection.disconnect();

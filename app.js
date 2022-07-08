@@ -8,6 +8,7 @@ import http from 'http';
 import https from 'https';
 import discordClient from './discordClient.js';
 import eventsub from './routes/eventsub.js';
+import eventsub from './routes/token.js';
 
 const PORT = process.env.PORT || 80;
 
@@ -52,6 +53,7 @@ app.get('/.well-known/acme-challenge/wLh1R-NgGZXRVjM6erfijyq08pIStq9dhZE0CafsMD8
 });
 
 app.use('/eventsub', eventsub);
+app.use('/token', token);
 
 // SERVER
 app.set('port', PORT);

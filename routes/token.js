@@ -22,10 +22,14 @@ router.get('/', (req, res, next) => {
       if (err) {
         console.log(err);
       }
+      console.log('hereeee',stdout);
+      console.log('hereeee',stderr);
       exec('pm2 restart streamBot --update-env', (err, stdout, stderr) => {
         if (err) {
           console.log(err);
         }
+        console.log(stdout);
+        console.log(stderr);
         res.send(data);
       })
     });

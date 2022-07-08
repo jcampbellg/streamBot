@@ -71,4 +71,3 @@ httpsServer.on('listening', () => {
 httpServer.listen(PORT);
 httpsServer.listen(443);
 discordClient.login(process.env.DISCORD_BOT_TOKEN);
-console.log('here:', process.env.TWITCH_BOT_PASSWORD);

@@ -190,9 +190,10 @@ discordClient.on('interactionCreate', async interaction => {
           flashes--;
         } else if (cmdActions.clear.includes(action && action.toLowerCase())) {
           flashes = 0;
+        } else {
+          flashes++;
         }
-        flashes++;
-    
+        
         obsClient.send('RestartMedia', { sourceName: 'Alert Gif' }).catch(err => console.log(err));
         obsClient.send('SetSceneItemRender', {'scene-name': 'Chat CMD', source: 'Flashes', render: true}).catch(err => { console.log(err); });
         setTimeout(() => {

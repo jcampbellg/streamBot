@@ -18,7 +18,6 @@ router.get('/', (req, res, next) => {
       redirect_uri: 'https://jcampbellg.me/token'
     }
   }).then(({data}) => {
-    res.send(data);
     exec(`export TWITCH_BOT_PASSWORD=${data.access_token}`, (err, stdout, stderr) => {
       if (err) {
         console.log(err);
@@ -27,6 +26,7 @@ router.get('/', (req, res, next) => {
         if (err) {
           console.log(err);
         }
+        res.send(data);
       })
     });
   })

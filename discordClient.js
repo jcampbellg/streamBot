@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 dotenv.config();
-import { Client, Intents } from 'discord.js'
+import { Client, Intents, MessageActionRow, MessageButton } from 'discord.js'
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { joinVoiceChannel, createAudioResource, StreamType, createAudioPlayer } from '@discordjs/voice';
 import { REST } from '@discordjs/rest';
@@ -27,6 +27,9 @@ const commands = [
         {value: 'End', name: 'Finalizar'},
       )
     ),
+  new SlashCommandBuilder()
+    .setName('stream-deck')
+    .setDescription('Mostrar los botones del stream deck'),
   new SlashCommandBuilder()
     .setName('cámara')
     .setDescription('Cambiar la posición de la cámara')
@@ -71,6 +74,50 @@ discordClient.once('ready', () => {
 
 let player;
 let voiceConnection;
+
+const streamDeck = (interaction, active) => {
+  const scenesRow = new MessageActionRow().addComponents(
+    new MessageButton()
+      .setCustomId('scenes')
+      .setLabel('Escenas:')
+      .setStyle('SECONDARY')
+      .setDisabled(true),
+    new MessageButton()
+      .setCustomId('Live')
+      .setLabel('En Vivo')
+      .setStyle(active === 'Live' ? 'SUCCESS' : 'PRIMARY'),
+    new MessageButton()
+      .setCustomId('End')
+      .setLabel('Finalizar')
+      .setStyle(active === 'End' ? 'SUCCESS' : 'PRIMARY'),
+  );
+  const camaraRow = new MessageActionRow().addComponents(
+    new MessageButton()
+      .setCustomId('camaras')
+      .setLabel('Camara:')
+      .setStyle('SECONDARY')
+      .setDisabled(true),
+    new MessageButton()
+      .setCustomId('Face Cam TL Big')
+      .setLabel('Arriba Izquierda')
+      .setStyle(active === 'Face Cam TL Big' ? 'SUCCESS' : 'PRIMARY'),
+    new MessageButton()
+      .setCustomId('Face Cam DL Small')
+      .setLabel('Abajo Izquierda')
+      .setStyle(active === 'Face Cam DL Small' ? 'SUCCESS' : 'PRIMARY'),
+    new MessageButton()
+      .setCustomId('Face Cam Chat')
+      .setLabel('Camara de Chat')
+      .setStyle(active === 'Face Cam Chat' ? 'SUCCESS' : 'PRIMARY'),
+  );
+  const endRow = new MessageActionRow().addComponents(
+    new MessageButton()
+      .setCustomId('finish')
+      .setLabel('Terminar Stream')
+      .setStyle('DANGER')
+  );
+  interaction.reply({content: 'Stream Deck:', components: [scenesRow, camaraRow, endRow]});
+}
 
 discordClient.on('interactionCreate', async interaction => {
   if (!interaction.isCommand()) return;
@@ -160,6 +207,10 @@ discordClient.on('interactionCreate', async interaction => {
     }
     interaction.reply(':white_check_mark: OBS en la escena `'+sceneName+'`');
   }
+  // stream-deck
+  if (commandName === 'stream-deck') {
+    streamDeck(interaction);
+  }
   // cámara
   if (commandName === 'cámara') {
     const position = options.getString('posición');
@@ -196,6 +247,47 @@ discordClient.on('interactionCreate', async interaction => {
 
     interaction.reply(':white_check_mark: `Activando voz`');
   }
+});
+
+discordClient.on('interactionCreate', interaction => {
+	if (!interaction.isButton()) return;
+  const { customId } = interaction;
+
+  if (customId === 'finish') {
+    tmiClient.disconnect().catch(console.error);
+    interaction.reply(':white_check_mark: `Desconectado de Twitch`');
+    if (voiceConnection) {
+      voiceConnection.disconnect();
+    }
+  } else {
+    if (['Live', 'End'].includes(customId)) {
+      obsClient.send('SetCurrentScene', {'scene-name': customId }).catch(err => console.log(err));
+    }
+
+    if (customId === 'Live') {
+      obsClient.send('SetSourceFilterVisibility', { sourceName: 'Sounds', filterName: 'Desktop', filterEnabled: true}).catch(err => console.log(err));
+      obsClient.send('SetSourceFilterVisibility', { sourceName: 'Sounds', filterName: 'MIC', filterEnabled: true}).catch(err => console.log(err));
+      obsClient.send('SetSourceFilterVisibility', { sourceName: 'Live', filterName: 'Face Cam Chat', filterEnabled: true}).catch(err => console.log(err));
+      obsClient.send('SetSourceFilterVisibility', { sourceName: 'Live', filterName: 'Chat Show', filterEnabled: true}).catch(err => console.log(err));
+      obsClient.send('SetSceneItemRender', {'scene-name': 'Live', source: 'Game Source', render: false}).catch(err => { console.log(err); });
+      tmiClient.say('#jcampbellg', '¡Hola Chat!');
+    }
+    
+    if (['Face Cam TL Big', 'Face Cam DL Small', 'Face Cam Chat'].includes(customId)) {
+      obsClient.send('SetSourceFilterVisibility', { sourceName: 'Live', filterName: customId, filterEnabled: true}).catch(err => console.log(err));
+
+      if (customId === 'Face Cam Chat') {
+        obsClient.send('SetSourceFilterVisibility', { sourceName: 'Live', filterName: 'Chat Show', filterEnabled: true}).catch(err => console.log(err));
+        obsClient.send('SetSceneItemRender', {'scene-name': 'Live', source: 'Game Source', render: false}).catch(err => { console.log(err); });
+      } else {
+        obsClient.send('SetSourceFilterVisibility', { sourceName: 'Live', filterName: 'Chat Hide', filterEnabled: true}).catch(err => console.log(err));
+        obsClient.send('SetSceneItemRender', {'scene-name': 'Live', source: 'Game Source', render: true}).catch(err => { console.log(err); });
+      }
+    }
+
+    streamDeck(interaction, customId);
+  }
+  
 });
 
 export const playAudio = (text) => {

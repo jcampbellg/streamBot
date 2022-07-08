@@ -10,7 +10,7 @@ const regexJustCommand = new RegExp(/^!([a-zA-Z0-9]+)?/);
 const tmiClient = new tmi.Client({
 	identity: {
 		username: 'jcampbellg',
-		password: '6gcw5y1vxp6u3madytqixyuwryvqzi'
+		password: process.env.TWITCH_BOT_PASSWORD
 	},
 	channels: [ 'jcampbellg' ]
 });

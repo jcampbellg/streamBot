@@ -8,7 +8,7 @@ import http from 'http';
 import https from 'https';
 import discordClient from './discordClient.js';
 import eventsub from './routes/eventsub.js';
-import eventsub from './routes/token.js';
+import token from './routes/token.js';
 
 const PORT = process.env.PORT || 80;
 

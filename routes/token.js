@@ -1,4 +1,5 @@
 import dotenv from 'dotenv';
+// import { exec } from 'child_process';
 dotenv.config();
 import express from 'express';
 import twitchApi from '../twitchApi.js';

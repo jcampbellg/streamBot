@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-// import { exec } from 'child_process';
+import { exec } from 'child_process';
 dotenv.config();
 import express from 'express';
 import twitchApi from '../twitchApi.js';
@@ -19,6 +19,16 @@ router.get('/', (req, res, next) => {
     }
   }).then(({data}) => {
     res.send(data);
+    exec(`export TWITCH_BOT_PASSWORD=${data.access_token}`, (err, stdout, stderr) => {
+      if (err) {
+        console.log(err);
+      }
+      exec('pm2 restart streamBot --update-env', (err, stdout, stderr) => {
+        if (err) {
+          console.log(err);
+        }
+      })
+    });
   })
 });
 

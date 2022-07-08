@@ -1,7 +1,6 @@
 import dotenv from 'dotenv';
 dotenv.config();
 import express from 'express';
-import { setTmi } from '../tmiClient.js';
 import twitchApi from '../twitchApi.js';
 const router = express.Router();
 
@@ -18,7 +17,6 @@ router.get('/', (req, res, next) => {
       redirect_uri: 'https://jcampbellg.me/token'
     }
   }).then(({data}) => {
-    setTmi(data.access_token);
     res.send(data);
   })
 });

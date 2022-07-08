@@ -9,6 +9,7 @@ import obsClient from './obsClient.js';
 import twitchApi from './twitchApi.js';
 import { events } from './constants.js';
 import { cmdActions } from './constants.js';
+import tmi from 'tmi.js';
 import gtts from 'node-gtts';
 
 const commands = [

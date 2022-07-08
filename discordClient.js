@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 dotenv.config();
 import { Client, Intents, MessageActionRow, MessageButton } from 'discord.js'
-import { SlashCommandBuilder } from '@discordjs/builders';
+import { SlashCommandBuilder, hyperlink } from '@discordjs/builders';
 import { joinVoiceChannel, createAudioResource, StreamType, createAudioPlayer } from '@discordjs/voice';
 import { REST } from '@discordjs/rest';
 import { Routes } from 'discord-api-types/v9';

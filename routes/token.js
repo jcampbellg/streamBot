@@ -1,8 +1,8 @@
 import dotenv from 'dotenv';
-import { exec } from 'child_process';
 dotenv.config();
 import express from 'express';
 import twitchApi from '../twitchApi.js';
+import { setTmiPassword } from '../discordClient.js';
 const router = express.Router();
 
 router.get('/', (req, res, next) => { 
@@ -18,21 +18,8 @@ router.get('/', (req, res, next) => {
       redirect_uri: 'https://jcampbellg.me/token'
     }
   }).then(({data}) => {
-    exec(`export TWITCH_BOT_PASSWORD=${data.access_token}`, (err, stdout, stderr) => {
-      if (err) {
-        console.log(err);
-      }
-      console.log('hereeee',stdout);
-      console.log('hereeee',stderr);
-      exec('pm2 restart streamBot --update-env', (err, stdout, stderr) => {
-        if (err) {
-          console.log(err);
-        }
-        console.log(stdout);
-        console.log(stderr);
-        res.send(data);
-      })
-    });
+    setTmiPassword(data.access_token);
+    res.send(data);
   })
 });
 

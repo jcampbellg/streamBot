@@ -15,7 +15,7 @@ router.get('/', (req, res, next) => {
       client_secret: process.env.TWITCH_SECRET,
       code: code,
       grant_type: 'authorization_code',
-      redirect_uri: process.env.WEBHOOK_URL+'/token'
+      redirect_uri: 'https://jcampbellg.me/token'
     }
   }).then(({data}) => {
     setPassword(data.access_token)

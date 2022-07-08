@@ -65,4 +65,14 @@ tmiClient.on('message', (channel, tags, message, self) => {
 
 });
 
+export const setTmi = (password) => {
+  tmiClient = new tmi.Client({
+    identity: {
+      username: 'jcampbellg',
+      password: password
+    },
+    channels: [ 'jcampbellg' ]
+  });
+}
+
 export default tmiClient;

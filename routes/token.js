@@ -1,9 +1,8 @@
 import dotenv from 'dotenv';
 dotenv.config();
 import express from 'express';
-import tmiClient from '../tmiClient.js';
+import { setTmi } from '../tmiClient.js';
 import twitchApi from '../twitchApi.js';
-import tmi from 'tmi.js';
 const router = express.Router();
 
 router.get('/', (req, res, next) => { 
@@ -19,13 +18,7 @@ router.get('/', (req, res, next) => {
       redirect_uri: 'https://jcampbellg.me/token'
     }
   }).then(({data}) => {
-    tmiClient = new tmi.Client({
-      identity: {
-        username: 'jcampbellg',
-        password: data.access_token
-      },
-      channels: [ 'jcampbellg' ]
-    });
+    setTmi(data.access_token);
     res.send(data);
   })
 });

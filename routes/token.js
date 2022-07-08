@@ -3,6 +3,7 @@ dotenv.config();
 import express from 'express';
 import tmiClient from '../tmiClient.js';
 import twitchApi from '../twitchApi.js';
+import tmi from 'tmi.js';
 const router = express.Router();
 
 router.get('/', (req, res, next) => { 

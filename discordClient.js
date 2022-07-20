@@ -157,6 +157,10 @@ discordClient.on('interactionCreate', async interaction => {
     });
 
     tmiClient.on('message', (channel, tags, message, self) => {
+      console.log(tags);
+      if (message.trim().toLowerCase().startsWith('wenas')) {
+        tmiClient.say(channel, 'Hola bonita <3');
+      }
       if(!message.startsWith('!')) return;
     
       const [raw, command, action, argument] = message.match(regexCommand) || message.match(regexJustCommand);

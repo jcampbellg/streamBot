@@ -140,7 +140,7 @@ const streamDeck = (interaction, active) => {
       .setLabel('Terminar Stream')
       .setStyle('DANGER')
   );
-  interaction.reply({content: 'Stream Deck:', components: [scenesRow, camaraRow, endRow]});
+  interaction.reply({content: 'Stream Deck:', components: [scenesRow, ...camaraRow, endRow]});
 }
 
 discordClient.on('interactionCreate', async interaction => {

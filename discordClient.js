@@ -77,7 +77,7 @@ let tmiPassword;
 let squad = [];
 let flashes = 0;
 
-const regexCommand = new RegExp(/^!([a-zA-Z0-9]+)\W+([a-zA-Z0-9+()-]+)(?:\W+)?(.*)?/)
+const regexCommand = new RegExp(/^!([a-zA-Z0-9]+)\W+([a-zA-Z0-9+()-]+)(?:\W+)?(.*)?/);
 const regexJustCommand = new RegExp(/^!([a-zA-Z0-9]+)?/);
 
 export const setTmiPassword = (password) => {

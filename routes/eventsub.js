@@ -15,7 +15,7 @@ router.post('/callback', (req, res, next) => {
     case 'notification':
       const { event, subscription} = req.body;
       discordClient.channels.fetch(process.env.DISCORD_NOTIFICATION_CHANNEL).then(channel => {
-        channel.send('```'+JSON.stringify(event, undefined, 2)+'```');
+        channel.send('```'+`${subscription.type}\n`+JSON.stringify(event, undefined, 2)+'```');
       });
 
       if (subscription.type === eventsType.redemption) {
@@ -24,6 +24,7 @@ router.post('/callback', (req, res, next) => {
             obsClient.send('RestartMedia', { sourceName: 'SIUUU' }).catch(err => console.log(err));
             break;
           case 'Una Dedicatoria':
+            obsClient.send('RestartMedia', { sourceName: 'Alert Gif' }).catch(err => console.log(err));
             obsClient.send('SetTextGDIPlusProperties', {source: 'Message', text: event.user_input}).catch(err => console.log(err));
             obsClient.send('SetTextGDIPlusProperties', {source: 'User', text: event.user_name}).catch(err => console.log(err));
             obsClient.send('SetSceneItemRender', {'scene-name': 'Stream Points', source: 'New Message', render: true}).catch(err => { console.log(err); });
@@ -75,12 +76,10 @@ router.post('/callback', (req, res, next) => {
         followText = `¡${event.user_name} se ha suscrito a tu canal!`;
       }
       if (subscription.type === eventsType.subscriptionMessage) {
-        followText = `¡${event.user_name} se ha suscrito a tu canal!
-${event.message.text}`;
+        followText = `¡${event.user_name} se ha suscrito a tu canal!\n${event.message.text}`;
       }
       if (subscription.type === eventsType.cheer) {
-        followText = `¡${event.user_name} te ha dado ${event.bits} bits!
-${event.message}`;
+        followText = `¡${event.user_name} te ha dado ${event.bits} bits!\n${event.message}`;
       }
       if (subscription.type === eventsType.raid) {
         followText = `¡${event.from_broadcaster_user_name} ha hecho un raid junto con ${event.viewers} personas!`;

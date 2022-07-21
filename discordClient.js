@@ -94,11 +94,6 @@ let voiceConnection;
 const streamDeck = (interaction, active) => {
   const scenesRow = new MessageActionRow().addComponents(
     new MessageButton()
-      .setCustomId('scenes')
-      .setLabel('Escenas:')
-      .setStyle('SECONDARY')
-      .setDisabled(true),
-    new MessageButton()
       .setCustomId('Live')
       .setLabel('En Vivo')
       .setStyle(active === 'Live' ? 'SUCCESS' : 'PRIMARY'),
@@ -106,25 +101,28 @@ const streamDeck = (interaction, active) => {
       .setCustomId('End')
       .setLabel('Finalizar')
       .setStyle(active === 'End' ? 'SUCCESS' : 'PRIMARY'),
+    new MessageButton()
+      .setCustomId('Face Cam Chat')
+      .setLabel('Chat')
+      .setStyle(active === 'Face Cam Chat' ? 'SUCCESS' : 'PRIMARY'),
   );
   const camaraRow = new MessageActionRow().addComponents(
     new MessageButton()
-      .setCustomId('camaras')
-      .setLabel('Camara:')
-      .setStyle('SECONDARY')
-      .setDisabled(true),
-    new MessageButton()
       .setCustomId('Face Cam TL Big')
-      .setLabel('Arriba Izquierda')
+      .setLabel('Ari Izq Gra')
       .setStyle(active === 'Face Cam TL Big' ? 'SUCCESS' : 'PRIMARY'),
     new MessageButton()
-      .setCustomId('Face Cam DL Small')
-      .setLabel('Abajo Izquierda')
-      .setStyle(active === 'Face Cam DL Small' ? 'SUCCESS' : 'PRIMARY'),
+      .setCustomId('Face Cam ML Small')
+      .setLabel('Enm Izq Peq')
+      .setStyle(active === 'Face Cam ML Small' ? 'SUCCESS' : 'PRIMARY'),
     new MessageButton()
-      .setCustomId('Face Cam Chat')
-      .setLabel('Camara de Chat')
-      .setStyle(active === 'Face Cam Chat' ? 'SUCCESS' : 'PRIMARY'),
+      .setCustomId('Face Cam ML Big')
+      .setLabel('Enm Izq Gra')
+      .setStyle(active === 'Face Cam ML Big' ? 'SUCCESS' : 'PRIMARY'),
+    new MessageButton()
+      .setCustomId('Face Cam DL Small')
+      .setLabel('Aba Izq Peq')
+      .setStyle(active === 'Face Cam DL Small' ? 'SUCCESS' : 'PRIMARY'),
   );
   const endRow = new MessageActionRow().addComponents(
     new MessageButton()
@@ -354,7 +352,7 @@ discordClient.on('interactionCreate', interaction => {
       tmiClient.say('#jcampbellg', '¡Hola Chat!');
     }
     
-    if (['Face Cam TL Big', 'Face Cam DL Small', 'Face Cam Chat'].includes(customId)) {
+    if (['Face Cam TL Big', 'Face Cam DL Small', 'Face Cam Chat', 'Face Cam ML Small', 'Face Cam ML Big'].includes(customId)) {
       obsClient.send('SetSourceFilterVisibility', { sourceName: 'Live', filterName: customId, filterEnabled: true}).catch(err => console.log(err));
 
       if (customId === 'Face Cam Chat') {

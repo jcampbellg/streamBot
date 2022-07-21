@@ -106,24 +106,34 @@ const streamDeck = (interaction, active) => {
       .setLabel('Chat')
       .setStyle(active === 'Face Cam Chat' ? 'SUCCESS' : 'PRIMARY'),
   );
-  const camaraRow = new MessageActionRow().addComponents(
-    new MessageButton()
-      .setCustomId('Face Cam TL Big')
-      .setLabel('Ari Izq Gra')
-      .setStyle(active === 'Face Cam TL Big' ? 'SUCCESS' : 'PRIMARY'),
-    new MessageButton()
-      .setCustomId('Face Cam ML Small')
-      .setLabel('Enm Izq Peq')
-      .setStyle(active === 'Face Cam ML Small' ? 'SUCCESS' : 'PRIMARY'),
-    new MessageButton()
-      .setCustomId('Face Cam ML Big')
-      .setLabel('Enm Izq Gra')
-      .setStyle(active === 'Face Cam ML Big' ? 'SUCCESS' : 'PRIMARY'),
-    new MessageButton()
-      .setCustomId('Face Cam DL Small')
-      .setLabel('Aba Izq Peq')
-      .setStyle(active === 'Face Cam DL Small' ? 'SUCCESS' : 'PRIMARY'),
-  );
+  const camaraRow = [
+    new MessageActionRow().addComponents(
+      new MessageButton()
+        .setCustomId('Face Cam TL Big')
+        .setLabel('Ari Izq Gra')
+        .setStyle(active === 'Face Cam TL Big' ? 'SUCCESS' : 'PRIMARY')
+    ),
+    new MessageActionRow().addComponents(
+      new MessageButton()
+        .setCustomId('Face Cam ML Small')
+        .setLabel('Enm Izq Peq')
+        .setStyle(active === 'Face Cam ML Small' ? 'SUCCESS' : 'PRIMARY'),
+      new MessageButton()
+        .setCustomId('Face Cam ML Big')
+        .setLabel('Enm Izq Gra')
+        .setStyle(active === 'Face Cam ML Big' ? 'SUCCESS' : 'PRIMARY'),
+    ),
+    new MessageActionRow().addComponents(
+      new MessageButton()
+        .setCustomId('Face Cam DL Small')
+        .setLabel('Aba Izq Peq')
+        .setStyle(active === 'Face Cam DL Small' ? 'SUCCESS' : 'PRIMARY'),
+      new MessageButton()
+        .setCustomId('Face Cam DL Big')
+        .setLabel('Aba Izq Gra')
+        .setStyle(active === 'Face Cam DL Big' ? 'SUCCESS' : 'PRIMARY'),
+    )
+];
   const endRow = new MessageActionRow().addComponents(
     new MessageButton()
       .setCustomId('finish')

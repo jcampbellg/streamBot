@@ -15,7 +15,8 @@ router.post('/callback', (req, res, next) => {
     case 'notification':
       const { event, subscription} = req.body;
       discordClient.channels.fetch(process.env.DISCORD_NOTIFICATION_CHANNEL).then(channel => {
-        channel.send('```'+`${subscription.type}\n`+JSON.stringify(event, undefined, 2)+'```');
+        channel.send('```'+JSON.stringify(subscription, undefined, 2)+'```');
+        channel.send('```'+JSON.stringify(event, undefined, 2)+'```');
       });
 
       if (subscription.type === eventsType.redemption) {
